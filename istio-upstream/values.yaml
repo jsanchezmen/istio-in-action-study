@@ -1,0 +1,75 @@
+base:
+  global:
+    istioNamespace: istio
+
+istiod:
+  # Reduce pilot (istiod) resource consumption for local dev
+  pilot:
+    resources:
+      requests:
+        cpu: 200m        # Default: 500m
+        memory: 512Mi    # Default: 2048Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+
+    # Disable autoscaling - keep single replica
+    autoscaleEnabled: false
+    replicaCount: 1      # Ensure only 1 replica
+
+    # Disable pod disruption budget (not needed locally)
+    podDisruptionBudget:
+      enabled: false
+
+  # Reduce sidecar proxy resource consumption
+  global:
+    istioNamespace: istio
+    proxy:
+      resources:
+        requests:
+          cpu: 50m       # Default: 100m
+          memory: 64Mi   # Default: 128Mi
+        limits:
+          cpu: 500m      # Default: 2000m
+          memory: 256Mi  # Default: 1024Mi
+
+    # Use IfNotPresent to avoid pulling images repeatedly
+    imagePullPolicy: IfNotPresent
+
+gateway:
+  name: istio-ingressgateway
+  # Use NodePort instead of LoadBalancer for Kind cluster
+  service:
+    type: NodePort      # Default: LoadBalancer (won't work in Kind)
+    ports:
+    - name: http2
+      port: 80
+      targetPort: 80
+      nodePort: 30080   # Fixed NodePort for easy access
+    - name: https
+      port: 443
+      targetPort: 443
+      nodePort: 30443
+    - name: tcp
+      port: 31400
+      nodePort: 30010   # Fixed NodePort for easy access
+    - name: tcp-2
+      port: 31401
+      nodePort: 30011   # Fixed NodePort for easy access
+
+  # Reduce gateway resource consumption for local dev
+  resources:
+    requests:
+      cpu: 50m          # Default: 100m
+      memory: 64Mi      # Default: 128Mi
+    limits:
+      cpu: 500m         # Default: 2000m
+      memory: 256Mi     # Default: 1024Mi
+
+  # Disable autoscaling - keep single replica
+  autoscaling:
+    enabled: false      # Default: true
+  replicaCount: 1       # Fixed replica count for local dev
+
+  # Use IfNotPresent to avoid pulling images repeatedly
+  imagePullPolicy: IfNotPresent

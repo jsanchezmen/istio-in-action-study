@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(helm dependency list:*)",
+      "Bash(docker system:*)",
+      "Bash(make create-cluster:*)",
+      "Bash(kubectl cluster-info:*)",
+      "Bash(kubectl get:*)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

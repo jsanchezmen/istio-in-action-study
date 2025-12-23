@@ -1,0 +1,37 @@
+{{ if .Values.gateway.multiMTls }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  namespace: istioinaction
+  name: coolstore-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "webapp.istioinaction.io"
+  - port:
+      number: 443
+      name: https-webapp
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: webapp-credential
+    hosts:
+    - "webapp.istioinaction.io"
+  - port:
+      number: 443
+      name: https-catalog
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: catalog-credential
+    hosts:
+    - "catalog.istioinaction.io"
+{{ end }}
+
+
