@@ -1,5 +1,9 @@
 # Istio test porject
 
+## Istio in Action Github Repository
+
+- https://github.com/istioinaction/book-source-code/tree/master
+
 ## Access Gateway Service
 
 Fixed NodePorts for easy access:
@@ -7,7 +11,7 @@ Fixed NodePorts for easy access:
 - HTTP: 30080 → access at http://localhost:30080
 - HTTPS: 30443 → access at https://localhost:30443
 
-## Call endpoints
+## Call endpoints CH4
 ```
 # Http
 curl http://127.0.0.1:30080/api/catalog -H "Host: webapp.istioinaction.io"
@@ -32,6 +36,16 @@ curl https://simple-sni-2.istioinaction.io:30010/ --cacert certs/sni-svc-2-ca-ch
 # Telnet TCP port
 telnet 127.0.0.1 30011
 
+```
+
+## Call endpoints CH5
+
+```
+curl http://localhost:30080/items -H "Host: catalog.istioinaction.io"
+curl http://localhost:30080/items -H "Host: catalog.istioinaction.io" -H "x-istio-cohort: internal"
+
+# Multiple times
+for i in {1..100}; do curl -s http://localhost:30080/items -H "Host: catalog.istioinaction.io"; done
 ```
 
 ## Notes

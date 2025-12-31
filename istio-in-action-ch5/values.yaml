@@ -1,0 +1,4 @@
+virtualService:
+  requestRouting: false
+  trafficShifting: false
+  trafficMirroring: true

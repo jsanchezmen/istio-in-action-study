@@ -60,4 +60,15 @@ upgrade-app-ch4:
 template-app-ch4:
 	helm template istio-in-action-ch4 istio-in-action-ch4
 
+template-app-ch5:
+	helm template istio-in-action-ch5 istio-in-action-ch5
 
+install-app-ch5:
+	helm install istio-in-action-ch5 istio-in-action-ch5
+
+uninstall-app-ch5:
+	helm uninstall istio-in-action-ch5
+
+upgrade-app-ch5:
+	helm upgrade istio-in-action-ch5 istio-in-action-ch5
+	
