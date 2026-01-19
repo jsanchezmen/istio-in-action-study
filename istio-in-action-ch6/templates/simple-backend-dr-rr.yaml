@@ -1,0 +1,12 @@
+{{ if .Values.loadBalancing }}
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  namespace: istioinaction
+  name: simple-backend-dr
+spec:
+  host: simple-backend.istioinaction.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM
+{{ end }}

@@ -37,6 +37,7 @@ uninstall-istio:
 template-istio:
 	helm template istio istio-upstream -n istio
 
+# Start
 up-istio-cluster: create-cluster install-istio
 
 install-app-ch2:
@@ -71,4 +72,20 @@ uninstall-app-ch5:
 
 upgrade-app-ch5:
 	helm upgrade istio-in-action-ch5 istio-in-action-ch5
+
+template-app-ch6:
+	helm template istio-in-action-ch6 istio-in-action-ch6
+
+# Pattern rule - usage: make validate-namespace-ch6, validate-namespace-ch5, etc.
+validate-namespace-ch%:
+	./scripts/validate-namespace.sh istio-in-action-ch$*
+
+install-app-ch6: validate-namespace-ch6
+	helm install istio-in-action-ch6 istio-in-action-ch6
+
+uninstall-app-ch6:
+	helm uninstall istio-in-action-ch6
+
+upgrade-app-ch6: validate-namespace-ch6
+	helm upgrade istio-in-action-ch6 istio-in-action-ch6
 	

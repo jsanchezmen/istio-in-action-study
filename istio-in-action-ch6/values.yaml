@@ -1,0 +1,7 @@
+loadBalancing: false
+timeout: false
+circuitBraker: true
+deployment:
+  simpleBackend2:
+    replicas: 0
+

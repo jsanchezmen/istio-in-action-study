@@ -48,5 +48,20 @@ curl http://localhost:30080/items -H "Host: catalog.istioinaction.io" -H "x-isti
 for i in {1..100}; do curl -s http://localhost:30080/items -H "Host: catalog.istioinaction.io"; done
 ```
 
+## Call Endpoints CH6
+
+```
+curl http://localhost:30080 -H "Host: simple-web.istioinaction.io"
+
+for in in {1..10}; do time curl -s \
+-H "Host: simple-web.istioinaction.io" http://localhost:30080 \
+| jq .code; printf "\n"; done
+
+## Fortio Load Test
+fortio load -H "Host: simple-web.istioinaction.io" \
+-quiet -jitter -t 30s -c 1 -qps 1 http://localhost:30080/
+
+```
+
 ## Notes
 When the ingress-gateway needs to read the certificate from a secret the deployment needs to be restarted

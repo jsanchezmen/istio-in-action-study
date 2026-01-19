@@ -1,0 +1,33 @@
+{{ if .Values.loadBalancing }}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  namespace: istioinaction
+  name: simple-web-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "simple-web.istioinaction.io"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: istioinaction
+  name: simple-web-vs-for-gateway
+spec:
+  hosts:
+  - "simple-web.istioinaction.io"
+  gateways:
+  - simple-web-gateway
+  http:
+  - route:
+    - destination:
+        host: simple-web
+{{ end }}
+    
