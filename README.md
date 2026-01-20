@@ -53,7 +53,7 @@ for i in {1..100}; do curl -s http://localhost:30080/items -H "Host: catalog.ist
 ```
 curl http://localhost:30080 -H "Host: simple-web.istioinaction.io"
 
-for in in {1..10}; do time curl -s \
+for in in {1..100}; do time curl -s \
 -H "Host: simple-web.istioinaction.io" http://localhost:30080 \
 | jq .code; printf "\n"; done
 
@@ -61,6 +61,8 @@ for in in {1..10}; do time curl -s \
 fortio load -H "Host: simple-web.istioinaction.io" \
 -quiet -jitter -t 30s -c 1 -qps 1 http://localhost:30080/
 
+fortio load -H "Host: simple-web.istioinaction.io" \
+-allow-initial-errors -quiet -jitter -t 30s -c 10 -qps 20 http://localhost:30080/
 ```
 
 ## Notes

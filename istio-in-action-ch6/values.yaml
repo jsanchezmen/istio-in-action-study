@@ -1,7 +1,9 @@
 loadBalancing: false
 timeout: false
-circuitBraker: true
+circuitBraker: false
+outlierDetection: true
+periodicFailure500: true
 deployment:
   simpleBackend2:
-    replicas: 0
+    replicas: 2
 
