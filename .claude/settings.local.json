@@ -6,7 +6,8 @@
       "Bash(make create-cluster:*)",
       "Bash(kubectl cluster-info:*)",
       "Bash(kubectl get:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(tree:*)"
     ]
   }
 }

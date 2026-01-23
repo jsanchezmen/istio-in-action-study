@@ -37,8 +37,31 @@ uninstall-istio:
 template-istio:
 	helm template istio istio-upstream -n istio
 
+upgrade-istio:
+	helm upgrade istio istio-upstream -n istio
+
 # Start
 up-istio-cluster: create-cluster install-istio
+
+# Prometheus Stack Operations
+update-prometheus-chart-deps:
+	helm dependency update kube-prometheus-stack-upstream
+
+add-prometheus-repo:
+	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+	helm repo update
+
+install-prometheus:
+	helm install prometheus kube-prometheus-stack-upstream -n monitoring --create-namespace
+
+uninstall-prometheus:
+	helm uninstall prometheus -n monitoring
+
+upgrade-prometheus:
+	helm upgrade prometheus kube-prometheus-stack-upstream -n monitoring
+
+template-prometheus:
+	helm template prometheus kube-prometheus-stack-upstream -n monitoring
 
 install-app-ch2:
 	helm install istio-in-action-ch2 istio-in-action-ch2

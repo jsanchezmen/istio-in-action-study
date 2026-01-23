@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is an Istio study/testing environment that uses Helm charts to deploy Istio to a local Kind (Kubernetes in Docker) cluster. The repository contains a Helm chart wrapper that depends on the official Istio base chart.
+This is an Istio study/testing environment that uses Helm charts to deploy Istio and Prometheus monitoring stack to a local Kind (Kubernetes in Docker) cluster. The repository contains Helm chart wrappers that depend on official upstream charts.
 
 ## Architecture
 
@@ -12,8 +12,12 @@ This is an Istio study/testing environment that uses Helm charts to deploy Istio
 
 - `istio-upstream/` - Helm chart for deploying Istio components
   - `Chart.yaml` - Defines dependency on istio-base v1.28.0 from official Istio charts repository
-  - `values.yaml` - Currently empty; can be used to override default Istio configurations
+  - `values.yaml` - Configured for local Kind cluster with reduced resources and NodePort services
   - `templates/` - Currently empty; can add custom Kubernetes manifests
+- `kube-prometheus-stack-upstream/` - Helm chart for deploying Prometheus monitoring stack
+  - `Chart.yaml` - Defines dependency on kube-prometheus-stack v81.2.1 from prometheus-community charts
+  - `values.yaml` - Optimized for local Kind cluster with reduced resources, disabled persistence, and NodePort services
+  - `templates/` - Currently empty; can add custom monitoring resources
 - `istio-in-action-ch2/` - Chapter 2: Basic Istio deployment and service mesh fundamentals
 - `istio-in-action-ch4/` - Chapter 4: Traffic management with Gateway, VirtualService, TLS/mTLS
 - `istio-in-action-ch5/` - Chapter 5: Advanced routing with headers, canary deployments, traffic shifting
@@ -94,6 +98,57 @@ When modifying Istio configurations:
 3. Use `helm dependency update` after modifying Chart.yaml dependencies
 4. Test changes with `helm template` before applying to cluster
 5. Deploy to Kind cluster with `helm upgrade` or `helm install`
+
+## Working with Prometheus Monitoring Stack
+
+The kube-prometheus-stack provides comprehensive monitoring with Prometheus, Grafana, and Alertmanager.
+
+### Configuration
+
+The `kube-prometheus-stack-upstream/values.yaml` is optimized for local Kind clusters:
+- **Resource Limits**: Reduced CPU/memory for local development
+- **Persistence**: Disabled (ephemeral storage for Kind)
+- **Service Type**: NodePort for easy browser access
+- **Retention**: 24 hours for metrics and alerts
+- **Replicas**: Single replica for all components
+
+### Accessing Monitoring Services
+
+After installation, access the monitoring UIs via fixed NodePorts:
+- **Prometheus UI**: http://localhost:30090
+- **Grafana Dashboard**: http://localhost:30300 (credentials: admin/admin)
+- **Alertmanager**: http://localhost:30903
+
+### Common Operations
+
+```bash
+# Update chart dependencies
+make update-prometheus-chart-deps
+
+# Install the monitoring stack
+make install-prometheus
+
+# Upgrade after configuration changes
+make upgrade-prometheus
+
+# Preview manifests without installing
+make template-prometheus
+
+# Uninstall the monitoring stack
+make uninstall-prometheus
+
+# Verify installation
+kubectl get pods -n monitoring
+```
+
+### Integration with Istio
+
+The monitoring stack automatically discovers Istio metrics via ServiceMonitors. After installing both Istio and Prometheus:
+
+1. Access Grafana at http://localhost:30300
+2. Default dashboards include Kubernetes cluster metrics
+3. Istio metrics are available under Prometheus datasource
+4. Create custom dashboards for Istio service mesh visualization
 
 ## Typical Workflow
 
@@ -213,18 +268,33 @@ make delete-cluster  # Delete entire Kind cluster
 
 ## Important Notes
 
-- Gateway NodePorts are fixed for easy access:
+- **Istio Gateway NodePorts** are fixed for easy access:
   - HTTP: 30080 → http://localhost:30080
   - HTTPS: 30443 → https://localhost:30443
+- **Prometheus Stack NodePorts** are fixed for monitoring access:
+  - Prometheus: 30090 → http://localhost:30090
+  - Grafana: 30300 → http://localhost:30300
+  - Alertmanager: 30903 → http://localhost:30903
 - When ingress-gateway needs to read certificates from secrets, restart the deployment
 - Chapter 6 includes automatic namespace validation before install/upgrade
 - The validation script is located at `scripts/validate-namespace.sh`
+- All monitoring components use ephemeral storage suitable for local development
 
 ## Reference Links
 
+### Makefile and Configuration
 - Makefile commands: `Makefile`
-- Istio base chart values: https://github.com/istio/istio/blob/master/manifests/charts/base/values.yaml
 - Istio chart with dependencies: `istio-upstream/`
+- Prometheus chart with dependencies: `kube-prometheus-stack-upstream/`
+
+### Istio References
+- Istio base chart values: https://github.com/istio/istio/blob/master/manifests/charts/base/values.yaml
 - Istiod chart values: https://github.com/istio/istio/blob/master/manifests/charts/istio-control/istio-discovery/values.yaml
 - Gateway chart values: https://github.com/istio/istio/blob/master/manifests/charts/gateway/values.yaml
 - Book source code: https://github.com/istioinaction/book-source-code/tree/master
+
+### Prometheus Stack References
+- kube-prometheus-stack chart: https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+- kube-prometheus-stack values.yaml: https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+- Prometheus documentation: https://prometheus.io/docs/
+- Grafana documentation: https://grafana.com/docs/
