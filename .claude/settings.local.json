@@ -7,7 +7,11 @@
       "Bash(kubectl cluster-info:*)",
       "Bash(kubectl get:*)",
       "WebFetch(domain:github.com)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(jq)",
+      "Bash(kubectl exec:*)",
+      "Bash(jq \".data.activeTargets[] | select\\(.labels.job | contains\\(\"\"istio\"\"\\)\\)\")",
+      "Bash(kubectl logs:*)"
     ]
   }
 }

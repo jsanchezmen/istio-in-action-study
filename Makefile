@@ -111,4 +111,13 @@ uninstall-app-ch6:
 
 upgrade-app-ch6: validate-namespace-ch6
 	helm upgrade istio-in-action-ch6 istio-in-action-ch6
+
+install-app-ch7:
+	helm install istio-in-action-ch7 istio-in-action-ch7
+
+uninstall-app-ch7:
+	helm uninstall istio-in-action-ch7
+
+upgrade-app-ch7:
+	helm upgrade istio-in-action-ch7 istio-in-action-ch7
 	
