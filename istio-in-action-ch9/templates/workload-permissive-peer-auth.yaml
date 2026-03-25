@@ -1,0 +1,13 @@
+{{ if .Values.security.workloadLevel }}
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: webapp
+  namespace: istioinaction
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  mtls:
+    mode: PERMISSIVE
+{{ end }}

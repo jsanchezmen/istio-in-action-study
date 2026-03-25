@@ -120,4 +120,22 @@ uninstall-app-ch7:
 
 upgrade-app-ch7:
 	helm upgrade istio-in-action-ch7 istio-in-action-ch7
+
+install-app-ch8:
+	helm install istio-in-action-ch8 istio-in-action-ch8
+
+uninstall-app-ch8:
+	helm uninstall istio-in-action-ch8
+
+upgrade-app-ch8:
+	helm upgrade istio-in-action-ch8 istio-in-action-ch8
+
+install-app-ch9:
+	helm install istio-in-action-ch9 istio-in-action-ch9
+
+uninstall-app-ch9: 
+	helm uninstall istio-in-action-ch9
+
+upgrade-app-ch9:
+	helm upgrade istio-in-action-ch9 istio-in-action-ch9
 	

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: istio-dashboards
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  istio-control-plane.json: |-
+{{ .Files.Get "dashboards/istio-control-plane.json" | indent 4 }}
+  istio-mesh.json: |-
+{{ .Files.Get "dashboards/istio-mesh.json" | indent 4 }}
+  istio-service.json: |-
+{{ .Files.Get "dashboards/istio-service.json" | indent 4 }}
+  istio-performance.json: |-
+{{ .Files.Get "dashboards/istio-performance.json" | indent 4 }}
+  istio-workload.json: |-
+{{ .Files.Get "dashboards/istio-workload.json" | indent 4 }}
+  
