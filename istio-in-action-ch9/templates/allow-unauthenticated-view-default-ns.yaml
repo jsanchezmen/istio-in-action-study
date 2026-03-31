@@ -1,0 +1,16 @@
+# Traffic from outside to webapp is allowed only if the request is a GET. 
+# This allows unauthenticated users to view the webapp,
+# but not to perform any other operations.
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: webapp-allow-unauthenticated-view
+  namespace: istioinaction
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  rules:
+  - to:
+    - operation:
+        methods: ["GET"]
