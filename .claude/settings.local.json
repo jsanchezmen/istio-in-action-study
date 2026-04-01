@@ -11,7 +11,8 @@
       "Bash(jq)",
       "Bash(kubectl exec:*)",
       "Bash(jq \".data.activeTargets[] | select\\(.labels.job | contains\\(\"\"istio\"\"\\)\\)\")",
-      "Bash(kubectl logs:*)"
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl rollout restart:*)"
     ]
   }
 }

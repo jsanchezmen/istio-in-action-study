@@ -138,4 +138,13 @@ uninstall-app-ch9:
 
 upgrade-app-ch9:
 	helm upgrade istio-in-action-ch9 istio-in-action-ch9
+
+install-app-ch9-1:
+	helm install istio-in-action-ch9-1 istio-in-action-ch9-1
+
+uninstall-app-ch9-1: 
+	helm uninstall istio-in-action-ch9-1
+
+upgrade-app-ch9-1:
+	helm upgrade istio-in-action-ch9-1 istio-in-action-ch9-1
 	
